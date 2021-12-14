@@ -23,7 +23,7 @@ entity ControlDisponible is
 			 InicioTemp2: out STD_LOGIC;
 			 InicioTemp3: out STD_LOGIC;
 			 InicioTemp4: out STD_LOGIC;
-			 casillaDisponible: out STD_LOGIC_VECTOR(2 downto 0)
+			 casillaDisponible: out STD_LOGIC_VECTOR(3 downto 0)
 			 );
 end ControlDisponible;
 
@@ -62,17 +62,17 @@ begin
 	begin
 		if rising_edge(clk50MHz) then
 			if casillaDisp=1 then
-				casillaDisponible <= "001";
+				casillaDisponible <= "0001";
 			elsif casillaDisp =2 then
-				casillaDisponible <= "010";
+				casillaDisponible <= "0010";
 			elsif casillaDisp =3 then
-				casillaDisponible <= "011";
+				casillaDisponible <= "0011";
 			elsif casillaDisp =4 then
-				casillaDisponible <= "100";
+				casillaDisponible <= "0100";
 			elsif casillaDisp=0 then
-				casillaDisponible <= "000";
+				casillaDisponible <= "0000";
 			else 
-				casillaDisponible <= "000";
+				casillaDisponible <= "0000";
 			end if;
 		end if;
 	end process deco;
@@ -84,7 +84,7 @@ begin
 	begin 
 	  if rising_edge(clk50MHz) then 
 	       
-			if(bandera_anterior = '0' and bandera_sinc = '1') then -- flanco de subida de entraAuto
+			if(bandera_sinc = '0' and bandera_nsinc = '1') and banderaGuarda = '0' then -- flanco de subida de entraAuto
 					-- Hacer flanco de subida a la casilla correspondiente
 					-- Las demás en cero
 				if casillaDisp=1 then
@@ -121,26 +121,23 @@ begin
 					InicioTemp3_aux<='0';
 					InicioTemp4_aux<='0';
 				end if;
+			end if;
+			-- tiempo de espera para proxima llegada
+			if contadorGuarda < 30_000_000 and banderaGuarda = '1' then
+				contadorGuarda:=contadorGuarda+1;			
 				
-				if contadorGuarda < 25000000 and banderaGuarda = '1' then
-					contadorGuarda:=contadorGuarda+1;			
-				else
-					banderaGuarda:='0';
-					contadorGuarda:=0;
-				end if;
+				InicioTemp1<=InicioTemp1_aux;
+				InicioTemp2<=InicioTemp2_aux;
+				InicioTemp3<=InicioTemp3_aux;
+				InicioTemp4<=InicioTemp4_aux;
+			else
+				banderaGuarda:='0';
+				contadorGuarda:=0;
 				
-				if banderaGuarda ='1' then
-					 InicioTemp1<=InicioTemp1_aux;
-					 InicioTemp2<=InicioTemp2_aux;
-					 InicioTemp3<=InicioTemp3_aux;
-					 InicioTemp4<=InicioTemp4_aux;
-				elsif banderaGuarda ='0' then 
-					 InicioTemp1<='0';
-					 InicioTemp2<='0';
-					 InicioTemp3<='0';
-					 InicioTemp4<='0';
-				end if;
-				
+				InicioTemp1<='0';
+				InicioTemp2<='0';
+				InicioTemp3<='0';
+				InicioTemp4<='0';
 			end if;
 			
 			bandera_anterior<=bandera_sinc;

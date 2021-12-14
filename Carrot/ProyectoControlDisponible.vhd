@@ -14,9 +14,15 @@ entity ProyectoControlDisponible is
 
 	Port ( reloj : in STD_LOGIC;
 			 boton_inicio: in STD_LOGIC;
-			 boton_stop1: in STD_LOGIC;
-			 boton_stop2: in STD_LOGIC;
-			 leds: out STD_LOGIC_VECTOR (2 downto 0)
+			 boton_stop1: in STD_LOGIC; 
+			 boton_stop2: in STD_LOGIC; 
+			 boton_stop3: in STD_LOGIC;
+			 boton_stop4: in STD_LOGIC;
+			 leds: out STD_LOGIC_VECTOR (3 downto 0);
+			 activo1_led: out STD_LOGIC;
+			 activo2_led: out STD_LOGIC;
+			 activo3_led: out STD_LOGIC;
+			 activo4_led: out STD_LOGIC
 			 );
 end ProyectoControlDisponible;
 
@@ -33,7 +39,7 @@ architecture behavioral of ProyectoControlDisponible is
 			 InicioTemp2: out STD_LOGIC;
 			 InicioTemp3: out STD_LOGIC;
 			 InicioTemp4: out STD_LOGIC;
-			 casillaDisponible: out STD_LOGIC_VECTOR(2 downto 0)
+			 casillaDisponible: out STD_LOGIC_VECTOR(3 downto 0)
 			 );
 	end component;
 	
@@ -62,9 +68,10 @@ architecture behavioral of ProyectoControlDisponible is
 	
 begin 
 	Temp1: Temporizador port map (reloj,inicioT1,boton_stop1, activo1,seg1);
-	Temp2: Temporizador port map (reloj,inicioT2,boton_stop1, activo2,seg2);
-	Temp3: Temporizador port map (reloj,inicioT3,boton_stop2, activo3,seg3);
-	Temp4: Temporizador port map (reloj,inicioT4,boton_stop2, activo4,seg4);
+	Temp2: Temporizador port map (reloj,inicioT2,boton_stop2, activo2,seg2);
+	Temp3: Temporizador port map (reloj,inicioT3,boton_stop3, activo3,seg3);
+	Temp4: Temporizador port map (reloj,inicioT4,boton_stop4, activo4,seg4);
+	
 	CtrlDisp: ControlDisponible port map (
 						 clk50MHz => reloj,
   						 entraAuto=> boton_inicio,
@@ -78,7 +85,11 @@ begin
 						 InicioTemp4=> inicioT4,
 						 casillaDisponible=> leds
 				);
-	
+				
+	activo1_led <= activo1;
+	activo2_led <= activo2;
+	activo3_led <= activo3;
+	activo4_led <= activo4;
 	 
 	
 	
