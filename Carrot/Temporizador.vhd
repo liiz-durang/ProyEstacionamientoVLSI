@@ -16,7 +16,7 @@ entity Temporizador is
 			 inicio: in STD_LOGIC;
 			 parar: in STD_LOGIC;
 			 activo: out STD_LOGIC;
-			 cuenta_seg: out STD_LOGIC_VECTOR (7 downto 0)
+			 cuenta_seg: out STD_LOGIC_VECTOR (11 downto 0)
 			 );
 end Temporizador;
 
@@ -30,7 +30,7 @@ begin
 
 	
 	process (clk50MHz, inicio) 	 -- Temporizador en ms
-		variable cuenta: std_logic_vector (7 downto 0) := "00000000";
+		variable cuenta: std_logic_vector (11 downto 0) := "000000000000";
 		variable contador_rapido: integer:=0;
 		variable contando : bit := '0';
 		
@@ -38,7 +38,7 @@ begin
 		if rising_edge (clk50MHz) then
 			if contando='0' then     -- En espera
 				if inicio /= previo and inicio='1' then -- flanco de subida
-					cuenta := "00000000";
+					cuenta := "000000000000";
 					contador_rapido:=0;
 					
 					contando := '1';

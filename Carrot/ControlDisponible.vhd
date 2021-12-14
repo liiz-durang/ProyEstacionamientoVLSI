@@ -29,14 +29,14 @@ end ControlDisponible;
 
 architecture behavioral of ControlDisponible is 
 	
-	signal InicioTemp1_aux : std_logic;
-	signal InicioTemp2_aux : std_logic;
-	signal InicioTemp3_aux : std_logic;
-	signal InicioTemp4_aux : std_logic;
+	signal InicioTemp1_aux : std_logic:='0';
+	signal InicioTemp2_aux : std_logic:='0';
+	signal InicioTemp3_aux : std_logic:='0';
+	signal InicioTemp4_aux : std_logic:='0';
 	signal casillaDisp: integer range 0 to 4:=0;
-	signal bandera_anterior : std_logic; 
-	signal bandera_sinc : std_logic;
-	signal bandera_nsinc : std_logic;
+	signal bandera_anterior : std_logic :='0'; 
+	signal bandera_sinc : std_logic :='0';
+	signal bandera_nsinc : std_logic :='0';
 begin 
 
 	revisaTemp : process (clk50MHz)
@@ -78,13 +78,12 @@ begin
 	end process deco;
 	
 	beginCasillaDisp: process(clk50MHz)
-	 variable banderaGuarda : std_LOGIC := '0';
-	 variable banderaEmpieza : std_LOGIC :='0';
+	 variable banderaGuarda : std_LOGIC := '1';
 	 variable contadorGuarda : integer:=0;
 	begin 
 	  if rising_edge(clk50MHz) then 
 	       
-			if(bandera_sinc = '0' and bandera_nsinc = '1') and banderaGuarda = '0' then -- flanco de subida de entraAuto
+			if(bandera_anterior = '0' and bandera_sinc = '1') and banderaGuarda = '0' then -- flanco de subida de entraAuto
 					-- Hacer flanco de subida a la casilla correspondiente
 					-- Las demás en cero
 				if casillaDisp=1 then

@@ -48,7 +48,7 @@ architecture behavioral of ProyectoControlDisponible is
 				 inicio: in STD_LOGIC;
 				 parar: in STD_LOGIC;
 				 activo: out STD_LOGIC;
-				 cuenta_seg: out STD_LOGIC_VECTOR (7 downto 0)
+				 cuenta_seg: out STD_LOGIC_VECTOR (11 downto 0)
 				 );
 	end component;
 	signal activo1: std_logic;
@@ -61,10 +61,10 @@ architecture behavioral of ProyectoControlDisponible is
 	signal inicioT3: std_logic;
 	signal inicioT4: std_logic;
 	
-	signal seg1: std_logic_vector(7 downto 0);
-	signal seg2: std_logic_vector(7 downto 0);
-	signal seg3: std_logic_vector(7 downto 0);
-	signal seg4: std_logic_vector(7 downto 0);
+	signal seg1: std_logic_vector(11 downto 0);
+	signal seg2: std_logic_vector(11 downto 0);
+	signal seg3: std_logic_vector(11 downto 0);
+	signal seg4: std_logic_vector(11 downto 0);
 	
 begin 
 	Temp1: Temporizador port map (reloj,inicioT1,boton_stop1, activo1,seg1);
