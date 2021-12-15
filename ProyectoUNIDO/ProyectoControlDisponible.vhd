@@ -291,19 +291,19 @@ begin
 		 
 	
 	-- prueba 
-	led_f1		<= not sismo;
-	led_f2      <= not emergencia;
-	led_f3      <= not disponible;
-	led_f4		<= not pulso_entrada;
+	led_f1		<= not emergencia;
+	led_f2      <= not sismo;
+	led_f3      <= not pulso_entrada;
+	led_f4		<= not disponible;
 	led_confirm <= boton_confirm;
 	
 	led_1 <= buzzer_signal;
 	led_2 <= auto_entra;
 	led_3 <= servo2;
 	led_4 <= servo1;
-	led_5 <= color(0);
+	led_5 <= color(2);
 	led_6 <= color(1);
-	led_7 <= color(2);
+	led_7 <= color(0);
 	D1: divisor_gen generic map (25) port map (reloj,reloj_div);
 	
 end behavioral;
