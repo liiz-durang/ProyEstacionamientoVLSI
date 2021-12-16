@@ -50,11 +50,16 @@ begin
 
 
 	-- Logic to advance to the next state
-	process (clk,emergencia, sismo, pulso_entrada, disponible, boton_confirm)
+	process (EdoPres,emergencia, sismo, pulso_entrada, disponible, boton_confirm)
 	begin
-		if (rising_edge(clk)) then
-			case EdoPres is
-				when s0 =>
+			--case EdoPres is
+				if EdoPres = s0 then
+					buzzer <= '0';
+					auto_entra <= '0';
+					servo2 <= '0';
+					servo1 <= '0';
+					color <= "000";
+
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
@@ -317,7 +322,13 @@ begin
 				
 					end if;
 		-- ESTADO 1
-				when s1 =>
+				elsif EdoPres = s1 then
+					buzzer <= '0';
+					auto_entra <= '0';
+					servo2 <= '0';
+					servo1 <= '0';
+					color <= "010";
+
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
@@ -580,7 +591,13 @@ begin
 						
 					end if;
 		-- ESTADO 2
-				when s2 =>
+				elsif EdoPres = s2 then
+					buzzer <= '0';
+					auto_entra <= '0';
+					servo2 <= '0';
+					servo1 <= '0';
+					color <= "001";
+
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
@@ -619,7 +636,7 @@ begin
 					disponible ='0' and
 					boton_confirm ='0' then -- "00100"
 					 
-					 	EdoSig <= s2;
+					 	EdoSig <= s1;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
@@ -844,7 +861,13 @@ begin
 					
 					end if;
 		-- ESTADO 3
-				when s3 =>
+				elsif EdoPres = s3 then
+					buzzer <= '0';
+					auto_entra <= '1';
+					servo2 <= '0';
+					servo1 <= '1';
+					color <= "001";
+					
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
@@ -1107,7 +1130,13 @@ begin
 					
 					end if;
 		-- ESTADO 4
-				when s4 =>
+				elsif EdoPres = s4 then
+					buzzer <= '0';
+					auto_entra <= '0';
+					servo2 <= '0';
+					servo1 <= '0';
+					color <= "100";
+
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
@@ -1370,7 +1399,12 @@ begin
 					
 					end if;
 		-- ESTADO 5
-				when s5 =>
+				elsif EdoPres = s5 then
+					buzzer <= '1';
+					auto_entra <= '0';
+					servo2 <= '1';
+					servo1 <= '1';
+					color <= "011";
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
@@ -1633,59 +1667,64 @@ begin
 						
 					end if;
 
-				when others => 
+				else
+					buzzer <= '0';
+					auto_entra <= '0';
+					servo2 <= '0';
+					servo1 <= '0';
+					color <= "000";
+
 					EdoSig <= s0;
-			end case;
-		end if;
+			end if;
 	end process;
 
-	-- Output depends solely on the current state
-	process (EdoPres)
-	begin
-		case EdoPres is
-			when s0 =>
-				buzzer <= '0';
-				auto_entra <= '0';
-				servo2 <= '0';
-				servo1 <= '0';
-				color <= "000";
-			when s1 =>
-				buzzer <= '0';
-				auto_entra <= '0';
-				servo2 <= '0';
-				servo1 <= '0';
-				color <= "010";
-			when s2 =>
-				buzzer <= '0';
-				auto_entra <= '0';
-				servo2 <= '0';
-				servo1 <= '0';
-				color <= "001";
-			when s3 =>
-				buzzer <= '0';
-				auto_entra <= '1';
-				servo2 <= '0';
-				servo1 <= '1';
-				color <= "001";
-			when s4 =>
-				buzzer <= '0';
-				auto_entra <= '0';
-				servo2 <= '0';
-				servo1 <= '0';
-				color <= "100";
-			when s5 =>
-				buzzer <= '1';
-				auto_entra <= '0';
-				servo2 <= '1';
-				servo1 <= '1';
-				color <= "011";
-			when others => 
-				buzzer <= '0';
-				auto_entra <= '0';
-				servo2 <= '0';
-				servo1 <= '0';
-				color <= "000";
-		end case;
-	end process;
+	-- -- Output depends solely on the current state
+	-- process (EdoPres)
+	-- begin
+	-- 	case EdoPres is
+	-- 		when s0 =>
+	-- 			buzzer <= '0';
+	-- 			auto_entra <= '0';
+	-- 			servo2 <= '0';
+	-- 			servo1 <= '0';
+	-- 			color <= "000";
+	-- 		when s1 =>
+	-- 			buzzer <= '0';
+	-- 			auto_entra <= '0';
+	-- 			servo2 <= '0';
+	-- 			servo1 <= '0';
+	-- 			color <= "010";
+	-- 		when s2 =>
+	-- 			buzzer <= '0';
+	-- 			auto_entra <= '0';
+	-- 			servo2 <= '0';
+	-- 			servo1 <= '0';
+	-- 			color <= "001";
+	-- 		when s3 =>
+	-- 			buzzer <= '0';
+	-- 			auto_entra <= '1';
+	-- 			servo2 <= '0';
+	-- 			servo1 <= '1';
+	-- 			color <= "001";
+	-- 		when s4 =>
+	-- 			buzzer <= '0';
+	-- 			auto_entra <= '0';
+	-- 			servo2 <= '0';
+	-- 			servo1 <= '0';
+	-- 			color <= "100";
+	-- 		when s5 =>
+	-- 			buzzer <= '1';
+	-- 			auto_entra <= '0';
+	-- 			servo2 <= '1';
+	-- 			servo1 <= '1';
+	-- 			color <= "011";
+	-- 		when others => 
+	-- 			buzzer <= '0';
+	-- 			auto_entra <= '0';
+	-- 			servo2 <= '0';
+	-- 			servo1 <= '0';
+	-- 			color <= "000";
+	-- 	end case;
+	-- end process;
 
 end rtl;
