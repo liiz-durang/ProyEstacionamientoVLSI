@@ -35,1574 +35,1614 @@ architecture rtl of ControlEstacionamiento is
 	type state_type is (s0, s1, s2, s3, s4, s5);
 
 	-- Register to hold the current state
-	signal state   : state_type;
+	signal EdoPres, EdoSig   : state_type := s0;
 
 begin
-
-	-- Logic to advance to the next state
-	process (clk, reset)
+	process (clk,reset)
 	begin
 		if reset = '0' then
-			state <= s0;
-		elsif (rising_edge(clk)) then
-			case state is
-				when s0=>
+			EdoPres <= s0;
+		elsif rising_edge(clk) then
+			EdoPres <= EdoSig;
+		end if;
+
+	end process;
+
+
+	-- Logic to advance to the next state
+	process (clk,emergencia, sismo, pulso_entrada, disponible, boton_confirm)
+	begin
+		if (rising_edge(clk)) then
+			case EdoPres is
+				when s0 =>
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 							
-						state <= s0;
+						EdoSig <= s0;
 						
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then 
+					boton_confirm ='1' then -- "00001"
 
-						state <= s0;
+						EdoSig <= s0;
 					
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00010"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00011"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00100"
 					 
-					 	state <= s1;
+					 	EdoSig <= s1;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00101"
 					 
-					 	state <= s1;
+					 	EdoSig <= s1;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00110"
 					 
-					 	state <= s2;
+					 	EdoSig <= s2;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00111"
 					 
-					 	state <= s2;
+					 	EdoSig <= s2;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01001"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01010"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01011"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01100"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01101"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01110"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01111"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 				    
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then 
+					boton_confirm ='0' then  -- "10000"
 							
-						state <= s4;
+						EdoSig <= s4;
 						
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10001"
 
-						state <= s4;
+						EdoSig <= s4;
 					
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10010"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10011"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10100"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10101"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10110"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10111"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then  -- "11000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11001"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
+
+					elsif emergencia='1' and
+					sismo = '1' and
+					pulso_entrada ='0' and
+					disponible ='1' and 
+					boton_confirm ='0' then -- "11010"
+					 
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='1' then -- "11011"
 					 
-					 	state <= s5;
-
-					elsif emergencia='1' and
-					sismo = '1' and
-					pulso_entrada ='0' and
-					disponible ='1' and
-					boton_confirm ='1' then
-					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11100"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11101"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11110"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11111"
 
-						state <= s5;
-						
+						EdoSig <= s5;
+			
+					else 
+					
+						EdoSig <= s0;
+				
 					end if;
-				when s1=>
+		-- ESTADO 1
+				when s1 =>
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then 
+					boton_confirm ='0' then -- "00000"
 							
-						state <= s0;
+						EdoSig <= s0;
 						
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00001"
 
-						state <= s0;
+						EdoSig <= s0;
 					
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00010"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00011"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00100"
 					 
-					 	state <= s1;
+					 	EdoSig <= s1;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00101"
 					 
-					 	state <= s1;
+					 	EdoSig <= s1;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00110"
 					 
-					 	state <= s2;
+					 	EdoSig <= s2;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00111"
 					 
-					 	state <= s2;
+					 	EdoSig <= s2;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01001"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01010"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01011"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01100"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01101"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01110"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01111"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 				    
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then 
+					boton_confirm ='0' then -- "10000" 
 												
-						state <= s4;
+						EdoSig <= s4;
 						
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10001"
 
-						state <= s4;
+						EdoSig <= s4;
 					
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10010"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10011"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10100"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10101"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10110"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10111"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11001"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11010"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11011"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11100"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11101"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11110"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11111"
 
-						state <= s5;
+						EdoSig <= s5;
+						
+					else 
 					
+						EdoSig <= s0;
+						
 					end if;
-				when s2=>
+		-- ESTADO 2
+				when s2 =>
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then 
+					boton_confirm ='0' then -- "00000" 
 							
-						state <= s0;
+						EdoSig <= s0;
 						
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00001"
 
-						state <= s0;
+						EdoSig <= s0;
 					
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00010"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00011"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00100"
 					 
-					 	state <= s2;
+					 	EdoSig <= s2;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00101"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00110"
 					 
-					 	state <= s2;
+					 	EdoSig <= s2;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00111"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01001"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01010"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01011"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01100"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01101"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01110"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01111"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 				    
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then 
+					boton_confirm ='0' then -- "10000" 
 							
-						state <= s4;
+						EdoSig <= s4;
 						
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10001"
 
-						state <= s4;
+						EdoSig <= s4;
 					
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10010"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10011"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10100"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10101"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10110"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10111"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11001"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11010"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11011"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11100"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11101"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11110"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11111"
 					
-						state <= s5;
+						EdoSig <= s5;
+						
+					else 
+					
+						EdoSig <= s0;
+					
 					
 					end if;
+		-- ESTADO 3
 				when s3 =>
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then 
+					boton_confirm ='0' then -- "00000" 
 							
-						state <= s0;
+						EdoSig <= s0;
 						
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00001"
 
-						state <= s0;
+						EdoSig <= s0;
 					
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00010"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00011"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00100"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00101"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00110"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00111"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01001"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01010"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01011"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01100"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01101"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "01110"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "01111"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 				    
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then 
+					boton_confirm ='0' then -- "10000" 
 							
-						state <= s4;
+						EdoSig <= s4;
 						
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10001"
 
-						state <= s4;
+						EdoSig <= s4;
 					
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10010"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10011"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10100"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10101"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "10110"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "10111"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11001"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11010"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11011"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11100"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11101"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "11110"
 					 
-					 	state <= s3;
+					 	EdoSig <= s3;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "11111"
 					
-						state <= s3;
+						EdoSig <= s3;
+					
+					else 
+					
+						EdoSig <= s0;
+					
 					end if;
+		-- ESTADO 4
 				when s4 =>
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then 
+					boton_confirm ='0' then -- "00000" 
 							
-						state <= s0;
+						EdoSig <= s0;
 						
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 
-						state <= s0;
+						EdoSig <= s0;
 					
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 				    
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 							
-						state <= s4;
+						EdoSig <= s4;
 						
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 
-						state <= s4;
+						EdoSig <= s4;
 					
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s4;
+					 	EdoSig <= s4;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					
-						state <= s5;
+						EdoSig <= s5;
+					
+					else 
+					
+						EdoSig <= s0;
+					
 					end if;
+		-- ESTADO 5
 				when s5 =>
 					if emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then 
+					boton_confirm ='0' then -- "00000" 
 							
-						state <= s0;
+						EdoSig <= s0;
 						
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 
-						state <= s0;
+						EdoSig <= s0;
 					
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '0' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s1;
+					 	EdoSig <= s1;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='0' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 				    
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 							
-						state <= s0;
+						EdoSig <= s0;
 						
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 
-						state <= s0;
+						EdoSig <= s0;
 					
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia = '1' and
 					sismo = '0' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s0;
+					 	EdoSig <= s0;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='0' and
 					disponible ='1' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='0' and
-					boton_confirm ='1' then
+					boton_confirm ='1' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='0' then
+					boton_confirm ='0' then -- "00000"
 					 
-					 	state <= s5;
+					 	EdoSig <= s5;
 
 					elsif emergencia='1' and
 					sismo = '1' and
 					pulso_entrada ='1' and
 					disponible ='1' and
-					boton_confirm ='1' then 
+					boton_confirm ='1' then -- "00000" 
 					
-						state <= s5;
+						EdoSig <= s5;
+					
+					else 
+					
+						EdoSig <= s0;
 						
 					end if;
 
 				when others => 
-					state <= s0;
+					EdoSig <= s0;
 			end case;
 		end if;
 	end process;
 
 	-- Output depends solely on the current state
-	process (state)
+	process (EdoPres)
 	begin
-		case state is
+		case EdoPres is
 			when s0 =>
 				buzzer <= '0';
 				auto_entra <= '0';
