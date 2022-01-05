@@ -15,7 +15,7 @@ use IEEE.std_logic_unsigned.all;
 --Entidad del sistema Reloj Digital 
 entity elegirTiempo is 
 	Port	( 	
-		clk50MHz		: in 	std_logic;
+		clk50MHz	: in 	std_logic;
 		cuenta1		: in 	STD_LOGIC_VECTOR (10 downto 0); --Tempo1
 		cuenta2		: in 	STD_LOGIC_VECTOR (10 downto 0); --Tempo2
 		cuenta3		: in 	STD_LOGIC_VECTOR (10 downto 0); --Tempo3

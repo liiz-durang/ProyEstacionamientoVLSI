@@ -21,7 +21,7 @@ architecture Behavioral of ControlSalidaServo is
 	
 	begin
 		if emergencia = '0' then
-			salidaServomotor <= '1';
+			salidaServomotor <= '1';     
 		else
 			if servo2 = '0' or servo2T = '0' then
 				salidaServomotor <= '0';

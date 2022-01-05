@@ -79,6 +79,8 @@ architecture behavorial of MostrarTiempo is
 	signal prueba: std_logic:= '0';
 begin 
 
+	cuenta<= cuenta_seg;
+	
 	U1: relojDigital port map (clk50Mhz, inicio, cuenta, unidadesSegundos, decenasSegundos, unidadesMinutos, decenasMinutos);
 	U3: vga port map (clk50MHz, column, row, display_ena, h_sync, v_sync);
 	

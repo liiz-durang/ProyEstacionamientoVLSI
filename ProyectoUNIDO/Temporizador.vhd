@@ -7,7 +7,7 @@ USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 -- * El bloque Control Disponible debe constantemente estar chechando las señales
 -- * activas de los temporizadores(0 libre, 1 ocupado) y mostrar en casillaDisp una casilla sugerida
 -- * donde se pueda estacionar. Si se detecta un flanco de subida en la señal entraAuto
--- * entonces se debe mandar el InicioTemp # respectivo a la casillaDisp sugerida.
+-- * entonces se debe mandar el InicioTemp # respectivo a la casillaDisp sugerida
 -- * 
 --*/
 entity Temporizador is

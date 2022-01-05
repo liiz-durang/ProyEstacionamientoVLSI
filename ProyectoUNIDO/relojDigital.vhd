@@ -30,7 +30,7 @@ architecture behavorial of relojDigital is
 	signal start 	: std_logic := '0';
 	signal stop		: std_logic:= '0';
 	signal auxClk 	: std_logic;
-	signal cuenta_bin: STD_LOGIC_VECTOR (7 downto 0):= "00000000"; --Vector en binario
+	signal cuenta_bin: STD_LOGIC_VECTOR (11 downto 0):= "000000000000"; --Vector en binario
 	
 	signal n 	: std_logic;
 	signal Qs 	: std_logic_vector(3 downto 0):= "0000";
@@ -45,13 +45,12 @@ architecture behavorial of relojDigital is
 	signal d : std_logic;
 	signal reset : std_logic:= '0'; 
 	
-
 begin 
 	--Recibe señal de activación para empezar a calcular tiempo en modo 00:00
 	iniciaCalculo : process (clk50MHz, inicio)
 	begin 
 		if rising_edge(clk50MHz) then 
-			if inicio = '1' then --detecta flanco de subida
+			if inicio='1' then --detecta flanco de subida 
 				start <= '1';
 				reset <= '0';
 			else 
@@ -91,7 +90,7 @@ begin
 		end if;
 		
 		if reset = '1' then 
-			cuenta_bin <= "00000000";	
+			cuenta_bin <= "000000000000";	
 		end if; 
 	end process;
 
@@ -154,7 +153,7 @@ begin
 		Quh <= cuenta; 
 	end process;
 	
-		HoraD: process (Z,reset)	
+	HoraD: process (Z,reset)	
 		variable cuenta: STD_LOGIC_VECTOR(3 downto 0) := "0000";
 	begin 
 		if rising_edge (Z) then 

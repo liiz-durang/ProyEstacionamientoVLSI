@@ -14,11 +14,12 @@ USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity ControlDisponible is
 
 	Port ( clk50MHz : in STD_LOGIC;
-			 inicio: in STD_LOGIC;
+			 entraAuto: in STD_LOGIC;
 			 TempActivo1: in STD_LOGIC;
 			 TempActivo2: in STD_LOGIC;
 			 TempActivo3: in STD_LOGIC;
 			 TempActivo4: in STD_LOGIC;
+			 disponible: out STD_LOGIC;
 			 InicioTemp1: out STD_LOGIC;
 			 InicioTemp2: out STD_LOGIC;
 			 InicioTemp3: out STD_LOGIC;
@@ -46,14 +47,19 @@ begin
 			
 			if TempActivo1 ='0' then -- esta disponible 1?
 				casillaDisp<=1;
+				disponible<='1';
 			elsif TempActivo2 ='0' then -- esta disponible 2?
 				casillaDisp<=2;
+				disponible<='1';
 			elsif TempActivo3 ='0' then -- esta disponible 3?
 				casillaDisp<=3;
+				disponible<='1';
 			elsif TempActivo4 ='0' then -- esta disponible 4?
 				casillaDisp<=4;
+				disponible<='1';
 			else  -- No hay disponible
 				casillaDisp<=0;
+				disponible<='0';
 			end if;
 		end if;
 	end process revisaTemp; 
@@ -83,7 +89,7 @@ begin
 	begin 
 	  if rising_edge(clk50MHz) then 
 	       
-			if(bandera_anterior = '0' and bandera_sinc = '1') and banderaGuarda = '0' then -- flanco de subida de inicio
+			if(bandera_anterior = '0' and bandera_sinc = '1') and banderaGuarda = '0' then -- flanco de subida de entraAuto
 					-- Hacer flanco de subida a la casilla correspondiente
 					-- Las demás en cero
 				if casillaDisp=1 then
@@ -141,7 +147,7 @@ begin
 			
 			bandera_anterior<=bandera_sinc;
 			bandera_sinc<=bandera_nsinc;
-			bandera_nsinc<=inicio;
+			bandera_nsinc<=entraAuto;
 	  
 	  end if;
 	
